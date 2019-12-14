@@ -14,11 +14,13 @@ struct graph {
     struct listnode **A;
 }; 
 
-void list_print(struct listnode *l); 
+void dfs1(Graph g, int i, int *aux);
+void dfs(Graph g); 
 
 int main (void) {
 Graph g = graph_read();
 graph_print(g); 
+dfs(g);
 }
 
 Graph graph_new(int n) {
@@ -74,4 +76,28 @@ void graph_print(Graph g) {
         l = l-> next; 
         }
     }
+}
+
+void dfs1(Graph g, int i, int *aux) {
+    struct listnode *t;
+    aux[i] = 1;
+    for(t = g->A[i]; t; t = t->next)
+        if(!aux[t->v]) {
+            printf("%d,",t->v);
+            dfs1(g,t->v,aux);
+        }
+}
+
+void dfs(Graph g) {
+    int i, *aux = calloc(g->V,sizeof(int));
+    if(!aux) { 
+        fprintf(stderr,"Errore di Allocazione\n"); 
+        exit(-4);
+        }
+    for(i = 0; i < g->V; i++)
+        if(!aux[i]) {
+            printf("\n%d,",i);
+            dfs1(g,i,aux);
+        }
+    free(aux);
 }
