@@ -8,9 +8,12 @@ struct graph {
     int **A; 
 }; 
 
+void dfs(Graph g);
+
 int main (void) {
     Graph g = graph_read(); 
-    graph_print(g);  
+    graph_print(g); 
+    dfs(g); 
 }
 
 Graph graph_new(int n) {
@@ -67,3 +70,28 @@ void graph_print(Graph g) {
     }
 }
 
+void dfs1(Graph g, int i, int *aux) {   
+    int j;
+    for (j=0;j< g->n; j++) {
+        if (g->A[i][j] &&  (!aux[i])) {
+            printf("%d ",i);
+            aux[i] = 1;
+            dfs1(g,j,aux); 
+        } 
+    }  
+}
+
+void dfs(Graph g) {
+    int i,j; 
+    int *aux = calloc(g->n, sizeof(int)); 
+    for (i=0;i< g->n; i++) {
+        for (j=0;j< g->n; j++) {
+            if (g->A[i][j] && !aux[i]) {
+                printf("%d ",i);
+                aux[i] = 1; 
+                dfs1(g,j,aux);
+            }
+        }
+    }
+    
+}
