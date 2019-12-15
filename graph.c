@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "code.c"
 #include "graph.h"
 
 struct graph {
@@ -8,12 +9,15 @@ struct graph {
     int **A; 
 }; 
 
+void dfs1(Graph g, int i, int *aux);
 void dfs(Graph g);
+void bfs(Graph g);
+void bfs1(Graph g, int i, int *aux); 
 
 int main (void) {
     Graph g = graph_read(); 
     graph_print(g); 
-    dfs(g); 
+    bfs(g); 
 }
 
 Graph graph_new(int n) {
@@ -94,4 +98,34 @@ void dfs(Graph g) {
         }
     }
     
+}
+
+void bfs1(Graph g, int i, int *aux) {
+    int x, j;
+    struct queue *q = createqueue();
+    enqueue(q,i);
+    aux[i] = 1; 
+    while (!emptyq(q)) {
+        x = dequeue(q);
+        for (j=0;j< g->n; j++) {
+            if(g->A[x][j] && !aux[j]) {
+                printf("%d",j); 
+                enqueue(q,j);
+                aux[j] = 1;
+            }
+        }
+    }
+}
+
+void bfs(Graph g) {
+    int i, j;
+    int *aux = calloc(g->n,sizeof(int));
+    for (i=0;i< g->n; i++) {
+        for (j=0;j< g->n;j++) {
+            if (!aux[i] && g->A[i][j]) {
+                printf("%d",i);
+                bfs1(g,i,aux);     
+            }        
+        }
+    }
 }
