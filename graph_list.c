@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "code.c"
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -16,11 +17,13 @@ struct graph {
 
 void dfs1(Graph g, int i, int *aux);
 void dfs(Graph g); 
+void bfs1(struct graph *g, int i, int *aux);
+void bfs(struct graph *g);
 
 int main (void) {
 Graph g = graph_read();
 graph_print(g); 
-dfs(g);
+bfs(g);
 }
 
 Graph graph_new(int n) {
@@ -98,6 +101,37 @@ void dfs(Graph g) {
         if(!aux[i]) {
             printf("\n%d,",i);
             dfs1(g,i,aux);
+        }
+    free(aux);
+}
+
+void bfs1(struct graph *g, int i, int *aux) {
+    struct listnode *t;
+    struct queue *q = createqueue(); 
+        enqueue(q,i);
+    while(!emptyq(q)) {
+        i = dequeue(q);
+        aux[i] = 1;
+    for(t = g->A[i]; t; t = t->next)
+        if(!aux[t->v]) {
+            enqueue(q,t->v);
+            printf("%d,",t->v);
+            aux[t->v] = 1;
+        }
+    }
+    destroyqueue(q);
+}
+
+void bfs(struct graph *g) {
+    int i, *aux = calloc(g->V,sizeof(int));
+    if(!aux) { 
+        fprintf(stderr,"Errore di Allocazione\n"); 
+        exit(-4); 
+        }
+    for(i = 0; i < g->V; i++)
+        if(!aux[i]) {
+            printf("\n%d,",i);    
+            bfs1(g,i,aux);
         }
     free(aux);
 }
