@@ -109,3 +109,30 @@ int ccc(Graph g) {
 
     return max+1; 
 } 
+
+void ccdfs(Graph g, int i, int *cc, int id) {   
+    int j;
+    cc[i] = 1; 
+    for (j=0;j< g->n; j++) {
+        if (g->A[i][j] &&  (!cc[j])) {
+            cc[j] = 1;
+            ccdfs(g,j,cc,id); 
+        } 
+    }  
+}
+
+void cc(Graph g,int v) {
+    int i,j; 
+    int *cc = calloc(g -> n,sizeof(int));   
+
+    for (j=0;j< g->n; j++) {
+        if (g->A[v][j]) {
+            ccdfs(g,j,cc,id++);
+        }
+    }
+
+    for (i = 0; i< g-> n; i++) {
+        if (g ->A[i]) 
+            printf("%d",i);
+    }
+} 
