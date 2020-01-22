@@ -26,8 +26,15 @@ int **matrix = calloc(maxpeso+1,sizeof(int*));
 for (i = 0; i<= maxpeso; i++)
     matrix[i] = calloc(n+1,sizeof(int));
 
-for (j=1; j<=maxpeso; j++) {
-    for (i=1; i<=n; i++)
+
+for (i=0; i<=maxpeso; i++) {
+    for (j=0; j<=n; j++)
+        printf("%d ",matrix[i][j]);
+    printf("\n");
+}
+
+for (j=1; j<=n; j++) {
+    for (i=1; i<=maxpeso; i++)
         if (oggetti[j]->peso > i)
             matrix[i][j] = matrix[i][j-1];
             else {
@@ -39,11 +46,25 @@ for (j=1; j<=maxpeso; j++) {
             }
 }
 
+printf("\n");
+
 for (i=0; i<=maxpeso; i++) {
     for (j=0; j<=n; j++)
         printf("%d ",matrix[i][j]);
     printf("\n");
 }
+
+for (i=0; i<=maxpeso; i++) {
+    free(matrix[i]);
+}
+
+free(matrix);
+
+for (i=0; i<=n;i++) {
+    free(oggetti[i]);
+}
+
+free(oggetti);
 
 }
 
