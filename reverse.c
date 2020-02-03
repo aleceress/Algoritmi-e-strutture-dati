@@ -39,8 +39,14 @@ Node new_node(int n) {
 
 void list_insert(Node *l, int n) {
     Node head = new_node(n);
-    (*l)-> next = *l; 
+    head -> next = *l; 
     *l = head; 
+
+    /*
+    Node head = new_node(n);
+    head -> next = l; 
+    return head; 
+    */
 }
 
 void list_print(Node head) {
